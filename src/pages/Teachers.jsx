@@ -1,34 +1,9 @@
-import { useState } from "react";
-
-const initialTeachers = [
-  {
-    id: 1,
-    name: "John Doe",
-    class: "Math",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    class: "Science",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 3,
-    name: "Michael Brown",
-    class: "History",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 4,
-    name: "Emily Johnson",
-    class: "English",
-    image: "https://via.placeholder.com/150",
-  },
-];
+import { useEffect, useState } from "react";
+import { getAllTeachers } from "../apis";
+import { useNavigate } from "react-router-dom";
 
 const Teachers = () => {
-  const [teachers, setTeachers] = useState(initialTeachers);
+  const [teachers, setTeachers] = useState([]);
   const [formData, setFormData] = useState({ name: "", class: "", image: "" });
 
   const handleChange = (e) => {
@@ -49,6 +24,25 @@ const Teachers = () => {
     setTeachers([...teachers, newTeacher]);
     setFormData({ name: "", class: "", image: "" });
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadStudents = async () => {
+      try {
+        const { teachers } = await getAllTeachers();
+
+        setTeachers(teachers);
+      } catch (e) {
+        console.log("################################", e);
+        if (e.message === "Unauthorized") {
+          localStorage.clear();
+          navigate("/login");
+        }
+      }
+    };
+    loadStudents();
+  }, []);
 
   return (
     <div className="container mt-4">

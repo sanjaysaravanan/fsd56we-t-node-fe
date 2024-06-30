@@ -5,13 +5,21 @@ const baseUrl = `${import.meta.env.VITE_BE_URL}`;
 // 1. Read all students
 async function getAllStudents() {
   try {
-    const response = await fetch(`${baseUrl}/students`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const response = await fetch(`${baseUrl}/students`, {
+      headers: {
+        authorization: localStorage.getItem("authToken"),
+      },
+    });
+    if (response.status === 401) {
+      throw new Error("401");
     }
     return await response.json();
   } catch (error) {
     console.error("Error fetching students:", error);
+
+    if (error.message === "401") {
+      throw new Error("Unauthorized");
+    }
   }
 }
 
@@ -84,10 +92,30 @@ const loginUser = async (userCreds) => {
   return await response.json();
 };
 
+async function getAllTeachers() {
+  try {
+    const response = await fetch(`${baseUrl}/teachers`, {
+      headers: {
+        authorization: localStorage.getItem("authToken"),
+      },
+    });
+    if (response.status === 401) {
+      throw new Error("401");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching teachers:", error);
+    if (error.message === "401") {
+      throw new Error("Unauthorized");
+    }
+  }
+}
+
 export {
   getAllStudents,
   deleteStudent,
   createStudent,
   registerUser,
   loginUser,
+  getAllTeachers,
 };

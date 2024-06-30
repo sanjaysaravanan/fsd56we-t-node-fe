@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createStudent, deleteStudent, getAllStudents } from "../apis";
 
 const Students = () => {
@@ -10,10 +11,20 @@ const Students = () => {
     teacherId: "",
   });
 
-  const loadStudents = async () => {
-    const { students } = await getAllStudents();
+  const navigate = useNavigate();
 
-    setStudents(students);
+  const loadStudents = async () => {
+    try {
+      const { students } = await getAllStudents();
+
+      setStudents(students);
+    } catch (e) {
+      console.log("################################", e);
+      if (e.message === "Unauthorized") {
+        localStorage.clear();
+        navigate("/login");
+      }
+    }
   };
 
   const removeStudent = async (stuId) => {

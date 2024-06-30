@@ -12,6 +12,7 @@ const initialState = {
   email: "",
   password: "",
   dob: "",
+  role: "student",
 };
 function Register() {
   const authStatus = localStorage.getItem("authStatus");
@@ -107,14 +108,28 @@ function Register() {
             required
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            className="form-control"
+            id="role"
+            name="role"
+            value={form.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+          </select>
+        </div>
         <button
           type="submit"
           style={{ float: "left" }}
-          className="btn btn-primary"
+          className="btn btn-primary mt-4"
         >
           Register
         </button>
-        <Link to="/login" style={{ float: "right" }}>
+        <Link to="/login" style={{ float: "right" }} className="mt-4">
           Go to Login
         </Link>
       </form>

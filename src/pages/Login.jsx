@@ -26,8 +26,9 @@ function Login() {
     e.preventDefault();
     console.log("Form data:", form);
     try {
-      await loginUser(form);
+      const { userToken } = await loginUser(form);
       localStorage.setItem("authStatus", "authenticated");
+      localStorage.setItem("authToken", userToken);
       navigate("/");
     } catch (e) {
       console.log("Error:", e);
