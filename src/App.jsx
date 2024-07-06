@@ -6,6 +6,8 @@ import Students from "./pages/Students";
 import Teachers from "./pages/Teachers";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import VerifyUser from "./pages/VerifyUser";
+import Redirection from "./pages/Redirection";
 
 // custom routecomponent which load the routes only when the authStatus is authenticated else it will navigated back to login page
 const ProtectedRoute = ({ routeElement }) => {
@@ -44,6 +46,8 @@ function App() {
           />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify-user-fe" element={<VerifyUser />} />
+          <Route path="/:urlId" element={<Redirection />} />
         </Routes>
       </BrowserRouter>
     </>

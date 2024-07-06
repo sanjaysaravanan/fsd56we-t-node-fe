@@ -111,6 +111,18 @@ async function getAllTeachers() {
   }
 }
 
+const userVerification = async (token) => {
+  const response = await fetch(`${baseUrl}/auth/verify-user`, {
+    headers: { authorization: token },
+  });
+
+  if (response.status === 400) {
+    throw new Error("Link Expired");
+  }
+
+  return await response.json();
+};
+
 export {
   getAllStudents,
   deleteStudent,
@@ -118,4 +130,5 @@ export {
   registerUser,
   loginUser,
   getAllTeachers,
+  userVerification,
 };
